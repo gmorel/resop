@@ -6,23 +6,26 @@ namespace App\Entity;
 
 use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use function Symfony\Component\String\u;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="users", uniqueConstraints={
  *   @ORM\UniqueConstraint(name="user_identification_number_unique", columns={"identification_number"}),
  *   @ORM\UniqueConstraint(name="user_email_address_unique", columns={"email_address"})
- * })
+ * }, indexes={
+ *   @ORM\Index(name="user_skill_set_idx", columns={"skill_set"}),
+ *   @ORM\Index(name="user_vulnerable_idx", columns={"vulnerable"}),
+ *   @ORM\Index(name="user_fully_equipped_idx", columns={"fully_equipped"}),
+ * }))
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("emailAddress")
+ * @UniqueEntity("identificationNumber")
  */
 class User implements UserInterface
 {
-    /**
-     * @ORM\Column
-     */
-    private ?string $identificationNumber = null;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -32,33 +35,47 @@ class User implements UserInterface
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      */
-    public ?string $emailAddress = null;
+    private string $identificationNumber = '';
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
+     * @Assert\Email
      */
-    public ?string $firstName = null;
+    public string $emailAddress = '';
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      */
-    public ?string $lastName = null;
+    public string $firstName = '';
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      */
-    public ?string $phoneNumber = null;
+    public string $lastName = '';
 
     /**
-     * @var string|null A "Y-m-d" formatted value
+     * @ORM\Column
+     * @Assert\NotBlank
+     */
+    public string $phoneNumber = '';
+
+    /**
+     * @var string A "Y-m-d" formatted value
      *
      * @ORM\Column
+     * @Assert\NotBlank
+     * @Assert\Date
      */
-    public ?string $birthday = null;
+    public string $birthday = '';
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      */
     public string $occupation = '';
 
@@ -69,8 +86,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(nullable=true)
+     * @Assert\NotBlank
      */
-    public ?string $organizationOccupation = null;
+    public string $organizationOccupation = '';
 
     /**
      * @ORM\Column(type="json", nullable=true)

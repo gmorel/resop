@@ -1,5 +1,4 @@
 # crf-resop
-=======
 
 [![pipeline status](https://gitlab.com/mRoca/resop/badges/master/pipeline.svg)](https://gitlab.com/mRoca/resop/commits/master)
 [![coverage report](https://gitlab.com/mRoca/resop/badges/master/coverage.svg)](https://gitlab.com/mRoca/resop/commits/master)
@@ -26,7 +25,7 @@ make
 # On MacOS, run:
 make pre-configure
 make configure
-# Now, update the docker-compose.override.yml and the .env files to match with your host
+# Now, update the docker-compose.override.yml file to match with your host
 make all
 ```
 
@@ -88,4 +87,12 @@ make test-cs
 make test-advanced
 make test-unit
 make test-unit-coverage
+```
+
+## Node
+
+A node container is available in order to run `yarn` commands for `webpack encore`:
+
+```bash
+bin/node-tools yarn encore dev
 ```
